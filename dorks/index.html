@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorks Generator</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #1f2328;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-primary: #58a6ff;
+            --accent-secondary: #7c3aed;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --error: #f85149;
+            --gradient-start: #1a1a2e;
+            --gradient-end: #16213e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: var(--text-primary);
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: clamp(1.8em, 4vw, 2.5em);
+            margin-bottom: 8px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+            color: var(--text-secondary);
+        }
+
+        .header .credit {
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-top: 8px;
+            color: var(--text-muted);
+        }
+
+        .input-section {
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.2s;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+            background: var(--bg-primary);
+        }
+
+        .input-group small {
+            display: block;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-primary);
+        }
+
+        .tabs {
+            display: flex;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) var(--bg-primary);
+        }
+
+        .tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .tabs::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        .tabs::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .tab {
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            background: var(--bg-secondary);
+            color: var(--accent-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: var(--bg-secondary);
+            min-height: 400px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .category {
+            margin-bottom: 24px;
+        }
+
+        .category-title {
+            font-size: clamp(1.2em, 2.5vw, 1.5em);
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+
+        .dork-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .dork-item:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-hover);
+            transform: translateX(2px);
+        }
+
+        .dork-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .dork-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--accent-primary);
+        }
+
+        .dork-content {
+            flex: 1;
+        }
+
+        .dork-label {
+            cursor: pointer;
+        }
+
+        .dork-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            font-size: 0.95em;
+        }
+
+        .dork-query {
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            font-size: 0.85em;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            padding: 10px;
+            border-radius: 6px;
+            word-break: break-all;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .dork-custom-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+            margin-top: 8px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .dork-custom-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .dork-custom-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.1);
+            background: var(--bg-primary);
+        }
+
+        .dork-custom-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .select-all-section {
+            padding: 12px 20px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .dork-search-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: all 0.2s;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .dork-search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .dork-search-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+            background: var(--bg-tertiary);
+        }
+
+        .dork-item.hidden {
+            display: none;
+        }
+
+        .select-all-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--accent-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .select-all-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
+        }
+
+        .stats {
+            padding: 12px 20px;
+            background: var(--bg-primary);
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                border-radius: 12px;
+            }
+
+            .tab-content {
+                padding: 16px;
+            }
+
+            .input-section {
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 8px;
+            }
+
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .header p {
+                font-size: 0.9em;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .select-all-section {
+                flex-direction: column;
+                padding: 12px 16px;
+            }
+
+            .search-container {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .select-all-btn {
+                width: 100%;
+            }
+
+            .tabs {
+                padding: 0;
+            }
+
+            .tab {
+                padding: 12px 16px;
+                font-size: 0.85em;
+            }
+
+            .tab-content {
+                padding: 12px;
+            }
+
+            .dork-item {
+                padding: 12px;
+            }
+
+            .category-title {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+
+            .tab {
+                padding: 10px 12px;
+                font-size: 0.8em;
+            }
+
+            .dork-query {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+
+            .input-group input {
+                padding: 10px 14px;
+                font-size: 0.95em;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Focus visible for accessibility */
+        *:focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dorks Generator</h1>
+            <p>Generate and execute dorks quickly and efficiently</p>
+            <div class="credit">made by @rdtav</div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="domain">Domain or Query *</label>
+                <input type="text" id="domain" placeholder="example.com" required>
+                <small>This value will replace "example.com" or "example[.]com" in the dorks</small>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" onclick="executeDorks()">Execute Selected Dorks</button>
+                <button class="btn btn-secondary" onclick="clearSelection()">Clear Selection</button>
+            </div>
+        </div>
+
+        <div class="tabs" id="tabs">
+            <button class="tab active" data-engine="google" onclick="switchTab('google')">Google</button>
+            <button class="tab" data-engine="bing" onclick="switchTab('bing')">Bing</button>
+            <button class="tab" data-engine="duckduckgo" onclick="switchTab('duckduckgo')">DuckDuckGo</button>
+            <button class="tab" data-engine="yandex" onclick="switchTab('yandex')">Yandex</button>
+            <button class="tab" data-engine="fofa" onclick="switchTab('fofa')">FOFA</button>
+            <button class="tab" data-engine="shodan" onclick="switchTab('shodan')">Shodan</button>
+            <button class="tab" data-engine="censys" onclick="switchTab('censys')">Censys</button>
+            <button class="tab" data-engine="leakix" onclick="switchTab('leakix')">LeakIX</button>
+            <button class="tab" data-engine="netlas" onclick="switchTab('netlas')">Netlas</button>
+            <button class="tab" data-engine="virustotal" onclick="switchTab('virustotal')">VirusTotal</button>
+            <button class="tab" data-category="cloud" onclick="switchTab('cloud')">Cloud Storage</button>
+            <button class="tab" data-category="code" onclick="switchTab('code')">Code Leaks</button>
+        </div>
+
+        <div class="select-all-section">
+            <div class="search-container" style="flex: 1; margin-right: 15px;">
+                <input type="text" id="dork-search" class="dork-search-input" placeholder="Search dorks..." oninput="filterDorks()">
+            </div>
+            <button class="select-all-btn" onclick="selectAll('all')">Select All</button>
+            <button class="select-all-btn" onclick="deselectAll()">Deselect All</button>
+        </div>
+
+        <div class="stats" id="stats">
+            No dorks selected
+        </div>
+
+        <div class="tab-content active" id="google-tab">
+            <div class="dorks-section" id="google-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="bing-tab">
+            <div class="dorks-section" id="bing-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="duckduckgo-tab">
+            <div class="dorks-section" id="duckduckgo-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="yandex-tab">
+            <div class="dorks-section" id="yandex-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="fofa-tab">
+            <div class="dorks-section" id="fofa-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="shodan-tab">
+            <div class="dorks-section" id="shodan-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="censys-tab">
+            <div class="dorks-section" id="censys-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="leakix-tab">
+            <div class="dorks-section" id="leakix-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="netlas-tab">
+            <div class="dorks-section" id="netlas-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="virustotal-tab">
+            <div class="dorks-section" id="virustotal-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="cloud-tab">
+            <div class="dorks-section" id="cloud-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+
+        <div class="tab-content" id="code-tab">
+            <div class="dorks-section" id="code-dorks">
+                <!-- Dorks will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dorks = [
+            {
+                name: "Broad domain search w/ negative search",
+                query: 'site:example.com -www -shop -share -ir -mfa',
+                category: 'google'
+            },
+            {
+                name: "PHP extension w/ parameters",
+                query: 'site:example.com ext:php inurl:?',
+                category: 'google'
+            },
+            {
+                name: "API Endpoints",
+                query: 'site:example[.]com inurl:api | site:*/rest | site:*/v1 | site:*/v2 | site:*/v3',
+                category: 'google'
+            },
+            {
+                name: "Juicy Extensions",
+                query: 'site:"example[.]com" ext:log | ext:txt | ext:conf | ext:cnf | ext:ini | ext:env | ext:sh | ext:bak | ext:backup | ext:swp | ext:old | ext:~ | ext:git | ext:svn | ext:htpasswd | ext:htaccess | ext:json',
+                category: 'google'
+            },
+            {
+                name: "High % inurl keywords",
+                query: 'inurl:conf | inurl:env | inurl:cgi | inurl:bin | inurl:etc | inurl:root | inurl:sql | inurl:backup | inurl:admin | inurl:php site:example[.]com',
+                category: 'google'
+            },
+            {
+                name: "Server Errors",
+                query: 'inurl:"error" | intitle:"exception" | intitle:"failure" | intitle:"server at" | inurl:exception | "database error" | "SQL syntax" | "undefined index" | "unhandled exception" | "stack trace" site:example[.]com',
+                category: 'google'
+            },
+            {
+                name: "XSS prone parameters",
+                query: 'inurl:q= | inurl:s= | inurl:search= | inurl:query= | inurl:keyword= | inurl:lang= inurl:& site:example.com',
+                category: 'google'
+            },
+            {
+                name: "Open Redirect prone parameters",
+                query: 'inurl:url= | inurl:return= | inurl:next= | inurl:redirect= | inurl:redir= | inurl:ret= | inurl:r2= | inurl:page= inurl:& inurl:http site:example.com',
+                category: 'google'
+            },
+            {
+                name: "SQLi Prone Parameters",
+                query: 'inurl:id= | inurl:pid= | inurl:category= | inurl:cat= | inurl:action= | inurl:sid= | inurl:dir= inurl:& site:example.com',
+                category: 'google'
+            },
+            {
+                name: "SSRF Prone Parameters",
+                query: 'inurl:http | inurl:url= | inurl:path= | inurl:dest= | inurl:html= | inurl:data= | inurl:domain=  | inurl:page= inurl:& site:example.com',
+                category: 'google'
+            },
+            {
+                name: "LFI Prone Parameters",
+                query: 'inurl:include | inurl:dir | inurl:detail= | inurl:file= | inurl:folder= | inurl:inc= | inurl:locate= | inurl:doc= | inurl:conf= inurl:& site:example.com',
+                category: 'google'
+            },
+            {
+                name: "RCE Prone Parameters",
+                query: 'inurl:cmd | inurl:exec= | inurl:query= | inurl:code= | inurl:do= | inurl:run= | inurl:read=  | inurl:ping= inurl:& site:example.com',
+                category: 'google'
+            },
+            {
+                name: "File upload endpoints",
+                query: 'site:example.com intext:"choose file" | intext:"select file" | intext:"upload PDF"',
+                category: 'google'
+            },
+            {
+                name: "API Docs",
+                query: 'inurl:apidocs | inurl:api-docs | inurl:swagger | inurl:api-explorer | inurl:redoc | inurl:openapi | intitle:"Swagger UI" site:"example[.]com"',
+                category: 'google'
+            },
+            {
+                name: "Login Pages",
+                query: 'inurl:login | inurl:signin | intitle:login | intitle:signin | inurl:secure site:example[.]com',
+                category: 'google'
+            },
+            {
+                name: "Test Environments",
+                query: 'inurl:test | inurl:env | inurl:dev | inurl:staging | inurl:sandbox | inurl:debug | inurl:temp | inurl:internal | inurl:demo site:example.com',
+                category: 'google'
+            },
+            {
+                name: "Sensitive Documents",
+                query: 'site:example.com ext:txt | ext:pdf | ext:xml | ext:xls | ext:xlsx | ext:ppt | ext:pptx | ext:doc | ext:docx intext:"confidential" | intext:"Not for Public Release" | intext:"internal use only" | intext:"do not distribute"',
+                category: 'google'
+            },
+            {
+                name: "Sensitive Parameters",
+                query: 'inurl:email= | inurl:phone= | inurl:name= | inurl:user= inurl:& site:example[.]com',
+                category: 'google'
+            },
+            {
+                name: "Adobe Experience Manager (AEM)",
+                query: 'inurl:/content/usergenerated | inurl:/content/dam | inurl:/jcr:content | inurl:/libs/granite | inurl:/etc/clientlibs | inurl:/content/geometrixx | inurl:/bin/wcm | inurl:/crx/de site:example[.]com',
+                category: 'google'
+            },
+            {
+                name: "Disclosed XSS and Open Redirects",
+                query: 'site:openbugbounty.org inurl:reports intext:"example.com"',
+                category: 'google'
+            },
+            {
+                name: "Google Groups",
+                query: 'site:groups.google.com "example.com"',
+                category: 'google'
+            },
+            {
+                name: "Code Leaks - Pastebin",
+                query: 'site:pastebin.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - JSFiddle",
+                query: 'site:jsfiddle.net "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - CodeBeautify",
+                query: 'site:codebeautify.org "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - CodePen",
+                query: 'site:codepen.io "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Postman",
+                query: 'site:*.postman.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - GitHub Gists",
+                query: 'site:gist.github.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - GitLab Snippets",
+                query: 'site:gitlab.com "example.com" inurl:snippets',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Repl.it",
+                query: 'site:repl.it "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Stack Overflow",
+                query: 'site:stackoverflow.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Reddit",
+                query: 'site:reddit.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Gitter",
+                query: 'site:gitter.im "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Trello",
+                query: 'site:trello.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Notion",
+                query: 'site:notion.so "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Confluence",
+                query: 'site:confluence.atlassian.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Jira",
+                query: 'site:atlassian.net "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Discord",
+                query: 'site:discord.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Slack",
+                query: 'site:slack.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - SourceForge",
+                query: 'site:sourceforge.net "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Bitbucket",
+                query: 'site:bitbucket.org "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Replit",
+                query: 'site:replit.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - CodeSandbox",
+                query: 'site:codesandbox.io "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Glitch",
+                query: 'site:glitch.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Code Leaks - Observable",
+                query: 'site:observablehq.com "example.com"',
+                category: 'code'
+            },
+            {
+                name: "Cloud Storage - S3 Amazon",
+                query: 'site:s3.amazonaws.com "example.com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Azure Blob",
+                query: 'site:blob.core.windows.net "example.com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Google APIs",
+                query: 'site:googleapis.com "example.com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Google Drive",
+                query: 'site:drive.google.com "example.com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Azure DevOps",
+                query: 'site:dev.azure.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - OneDrive",
+                query: 'site:onedrive.live.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - DigitalOcean Spaces",
+                query: 'site:digitaloceanspaces.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - SharePoint",
+                query: 'site:sharepoint.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - S3 External",
+                query: 'site:s3-external-1.amazonaws.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - S3 Dualstack",
+                query: 'site:s3.dualstack.us-east-1.amazonaws.com "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Dropbox",
+                query: 'site:dropbox.com/s "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Cloud Storage - Google Docs",
+                query: 'site:docs.google.com inurl:"/d/" "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "JFrog Artifactory",
+                query: 'site:jfrog.io "example[.]com"',
+                category: 'cloud'
+            },
+            {
+                name: "Firebase",
+                query: 'site:firebaseio.com "example[.]com"',
+                category: 'cloud'
+            }
+        ];
+
+        // Bing-specific dorks (simpler operators, compatible with Bing)
+        const bingDorks = [
+            {
+                name: "Domain search",
+                query: 'site:example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain search excluding www",
+                query: 'site:example.com -www',
+                category: 'google'
+            },
+            {
+                name: "PHP files",
+                query: 'site:example.com filetype:php',
+                category: 'google'
+            },
+            {
+                name: "PDF files",
+                query: 'site:example.com filetype:pdf',
+                category: 'google'
+            },
+            {
+                name: "Login pages",
+                query: 'site:example.com "login"',
+                category: 'google'
+            },
+            {
+                name: "Admin pages",
+                query: 'site:example.com "admin"',
+                category: 'google'
+            },
+            {
+                name: "API endpoints",
+                query: 'site:example.com "api"',
+                category: 'google'
+            },
+            {
+                name: "Configuration files",
+                query: 'site:example.com "config"',
+                category: 'google'
+            },
+            {
+                name: "Error pages",
+                query: 'site:example.com "error"',
+                category: 'google'
+            },
+            {
+                name: "Test environment",
+                query: 'site:example.com "test"',
+                category: 'google'
+            }
+        ];
+
+        // DuckDuckGo-specific dorks (very limited operators)
+        const duckduckgoDorks = [
+            {
+                name: "Domain search",
+                query: 'site:example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain with login",
+                query: 'site:example.com login',
+                category: 'google'
+            },
+            {
+                name: "Domain with admin",
+                query: 'site:example.com admin',
+                category: 'google'
+            },
+            {
+                name: "Domain with API",
+                query: 'site:example.com api',
+                category: 'google'
+            },
+            {
+                name: "Domain with error",
+                query: 'site:example.com error',
+                category: 'google'
+            },
+            {
+                name: "Domain with config",
+                query: 'site:example.com config',
+                category: 'google'
+            },
+            {
+                name: "Domain with password",
+                query: 'site:example.com password',
+                category: 'google'
+            },
+            {
+                name: "Domain with secret",
+                query: 'site:example.com secret',
+                category: 'google'
+            },
+            {
+                name: "Domain with key",
+                query: 'site:example.com key',
+                category: 'google'
+            },
+            {
+                name: "Domain with token",
+                query: 'site:example.com token',
+                category: 'google'
+            }
+        ];
+
+        // Yandex-specific dorks (limited operators)
+        const yandexDorks = [
+            {
+                name: "Domain search",
+                query: 'site:example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain with login",
+                query: 'site:example.com login',
+                category: 'google'
+            },
+            {
+                name: "Domain with admin",
+                query: 'site:example.com admin',
+                category: 'google'
+            },
+            {
+                name: "Domain with API",
+                query: 'site:example.com api',
+                category: 'google'
+            },
+            {
+                name: "Domain with error",
+                query: 'site:example.com error',
+                category: 'google'
+            },
+            {
+                name: "Domain with config",
+                query: 'site:example.com config',
+                category: 'google'
+            },
+            {
+                name: "Domain with password",
+                query: 'site:example.com password',
+                category: 'google'
+            },
+            {
+                name: "Domain with secret",
+                query: 'site:example.com secret',
+                category: 'google'
+            },
+            {
+                name: "Domain with key",
+                query: 'site:example.com key',
+                category: 'google'
+            },
+            {
+                name: "Domain with token",
+                query: 'site:example.com token',
+                category: 'google'
+            }
+        ];
+
+        // FOFA-specific dorks (FOFA uses domain, host, title, body, etc.)
+        const fofaDorks = [
+            {
+                name: "Domain search",
+                query: 'domain="example.com"',
+                category: 'google'
+            },
+            {
+                name: "Host search",
+                query: 'host="example.com"',
+                category: 'google'
+            },
+            {
+                name: "Title contains login",
+                query: 'domain="example.com" && title="login"',
+                category: 'google'
+            },
+            {
+                name: "Body contains admin",
+                query: 'domain="example.com" && body="admin"',
+                category: 'google'
+            },
+            {
+                name: "Open ports",
+                query: 'domain="example.com" && port="80,443,8080"',
+                category: 'google'
+            },
+            {
+                name: "HTTP services",
+                query: 'domain="example.com" && protocol="http"',
+                category: 'google'
+            },
+            {
+                name: "HTTPS services",
+                query: 'domain="example.com" && protocol="https"',
+                category: 'google'
+            },
+            {
+                name: "Title contains API",
+                query: 'domain="example.com" && title="api"',
+                category: 'google'
+            },
+            {
+                name: "Body contains error",
+                query: 'domain="example.com" && body="error"',
+                category: 'google'
+            },
+            {
+                name: "Certificate search",
+                query: 'cert="example.com"',
+                category: 'google'
+            }
+        ];
+
+        // Shodan-specific dorks
+        const shodanDorks = [
+            {
+                name: "Hostname search",
+                query: 'hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain search",
+                query: 'domain:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title",
+                query: 'http.title:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title login",
+                query: 'http.title:"login" hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title admin",
+                query: 'http.title:"admin" hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title API",
+                query: 'http.title:"api" hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "Port 80",
+                query: 'hostname:example.com port:80',
+                category: 'google'
+            },
+            {
+                name: "Port 443",
+                query: 'hostname:example.com port:443',
+                category: 'google'
+            },
+            {
+                name: "SSL certificate",
+                query: 'ssl.cert.subject.cn:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP status 200",
+                query: 'http.status:200 hostname:example.com',
+                category: 'google'
+            }
+        ];
+
+        // Censys-specific dorks
+        const censysDorks = [
+            {
+                name: "Domain search",
+                query: 'services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            },
+            {
+                name: "Hostname search",
+                query: 'services.http.response.html_title:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title login",
+                query: 'services.http.response.html_title:"login" AND services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title admin",
+                query: 'services.http.response.html_title:"admin" AND services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            },
+            {
+                name: "Port 80",
+                query: 'services.service_name:HTTP AND services.tls.certificates.leaf_data.subject.common_name:example.com AND services.port:80',
+                category: 'google'
+            },
+            {
+                name: "Port 443",
+                query: 'services.service_name:HTTPS AND services.tls.certificates.leaf_data.subject.common_name:example.com AND services.port:443',
+                category: 'google'
+            },
+            {
+                name: "HTTP body contains",
+                query: 'services.http.response.body:example.com',
+                category: 'google'
+            },
+            {
+                name: "Certificate search",
+                query: 'services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP status 200",
+                query: 'services.http.response.status_code:200 AND services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            },
+            {
+                name: "Service name HTTP",
+                query: 'services.service_name:HTTP AND services.tls.certificates.leaf_data.subject.common_name:example.com',
+                category: 'google'
+            }
+        ];
+
+        // LeakIX-specific dorks
+        const leakixDorks = [
+            {
+                name: "Domain search",
+                query: 'domain:example.com',
+                category: 'google'
+            },
+            {
+                name: "Hostname search",
+                query: 'hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title login",
+                query: 'domain:example.com http.title:"login"',
+                category: 'google'
+            },
+            {
+                name: "HTTP title admin",
+                query: 'domain:example.com http.title:"admin"',
+                category: 'google'
+            },
+            {
+                name: "HTTP title API",
+                query: 'domain:example.com http.title:"api"',
+                category: 'google'
+            },
+            {
+                name: "HTTP body contains",
+                query: 'domain:example.com http.body:"error"',
+                category: 'google'
+            },
+            {
+                name: "Port 80",
+                query: 'domain:example.com port:80',
+                category: 'google'
+            },
+            {
+                name: "Port 443",
+                query: 'domain:example.com port:443',
+                category: 'google'
+            },
+            {
+                name: "SSL certificate",
+                query: 'domain:example.com ssl.cert:"example.com"',
+                category: 'google'
+            },
+            {
+                name: "Service HTTP",
+                query: 'domain:example.com service:"http"',
+                category: 'google'
+            }
+        ];
+
+        // Netlas-specific dorks
+        const netlasDorks = [
+            {
+                name: "Domain search",
+                query: 'domain:example.com',
+                category: 'google'
+            },
+            {
+                name: "Hostname search",
+                query: 'hostname:example.com',
+                category: 'google'
+            },
+            {
+                name: "HTTP title login",
+                query: 'domain:example.com http.title:"login"',
+                category: 'google'
+            },
+            {
+                name: "HTTP title admin",
+                query: 'domain:example.com http.title:"admin"',
+                category: 'google'
+            },
+            {
+                name: "HTTP title API",
+                query: 'domain:example.com http.title:"api"',
+                category: 'google'
+            },
+            {
+                name: "Port 80",
+                query: 'domain:example.com port:80',
+                category: 'google'
+            },
+            {
+                name: "Port 443",
+                query: 'domain:example.com port:443',
+                category: 'google'
+            },
+            {
+                name: "HTTP status 200",
+                query: 'domain:example.com http.status:200',
+                category: 'google'
+            },
+            {
+                name: "SSL certificate",
+                query: 'domain:example.com ssl.cert:"example.com"',
+                category: 'google'
+            },
+            {
+                name: "Service HTTP",
+                query: 'domain:example.com service:"http"',
+                category: 'google'
+            }
+        ];
+
+        // VirusTotal-specific dorks
+        const virustotalDorks = [
+            {
+                name: "Domain search",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain with IP",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain subdomains",
+                query: '*.example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain files",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain URLs",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain relations",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain comments",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain graph",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain behavior",
+                query: 'example.com',
+                category: 'google'
+            },
+            {
+                name: "Domain details",
+                query: 'example.com',
+                category: 'google'
+            }
+        ];
+
+        const searchEngines = {
+            google: {
+                name: 'Google',
+                baseUrl: 'https://www.google.com/search?q='
+            },
+            bing: {
+                name: 'Bing',
+                baseUrl: 'https://www.bing.com/search?q='
+            },
+            duckduckgo: {
+                name: 'DuckDuckGo',
+                baseUrl: 'https://duckduckgo.com/?q='
+            },
+            yandex: {
+                name: 'Yandex',
+                baseUrl: 'https://yandex.com/search/?text='
+            },
+            fofa: {
+                name: 'FOFA',
+                baseUrl: 'https://fofa.so/result?q='
+            },
+            shodan: {
+                name: 'Shodan',
+                baseUrl: 'https://www.shodan.io/search?query='
+            },
+            censys: {
+                name: 'Censys',
+                baseUrl: 'https://search.censys.io/search?q='
+            },
+            leakix: {
+                name: 'LeakIX',
+                baseUrl: 'https://leakix.net/search?q='
+            },
+            netlas: {
+                name: 'Netlas',
+                baseUrl: 'https://app.netlas.io/responses/?q='
+            },
+            virustotal: {
+                name: 'VirusTotal',
+                baseUrl: 'https://www.virustotal.com/gui/search/'
+            }
+        };
+
+        let currentEngine = 'google';
+        let currentTab = 'google';
+
+        function renderDorks(tab) {
+            const sectionId = `${tab}-dorks`;
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+            
+            section.innerHTML = '';
+            
+            // Check if this is a category tab (cloud or code)
+            const isCategoryTab = tab === 'cloud' || tab === 'code';
+            const searchEngine = isCategoryTab ? 'google' : tab;
+            
+            if (isCategoryTab) {
+                // Render only dorks from this category
+                const categoryDorks = dorks.filter(d => d.category === tab);
+                if (categoryDorks.length === 0) {
+                    section.innerHTML = '<p>No dorks found for this category.</p>';
+                    return;
+                }
+
+                const categoryTitle = tab === 'cloud' ? 'Cloud Storage' : 'Code Leaks';
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.innerHTML = `<div class="category-title">${categoryTitle}</div>`;
+                section.appendChild(categoryDiv);
+
+                categoryDorks.forEach((dork, index) => {
+                    const dorkDiv = document.createElement('div');
+                    dorkDiv.className = 'dork-item';
+                    const id = `dork-${tab}-${index}`;
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = id;
+                    checkbox.setAttribute('data-query', dork.query);
+                    checkbox.setAttribute('data-engine', searchEngine);
+                    checkbox.setAttribute('data-category', tab);
+                    checkbox.setAttribute('data-tab', tab);
+                    
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'dork-checkbox';
+                    checkboxDiv.appendChild(checkbox);
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'dork-content';
+                    
+                    const label = document.createElement('label');
+                    label.setAttribute('for', id);
+                    label.className = 'dork-label';
+                    
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'dork-name';
+                    nameDiv.textContent = dork.name;
+                    
+                    const queryDiv = document.createElement('div');
+                    queryDiv.className = 'dork-query';
+                    queryDiv.textContent = dork.query;
+                    
+                    label.appendChild(nameDiv);
+                    label.appendChild(queryDiv);
+                    
+                    const customInput = document.createElement('input');
+                    customInput.type = 'text';
+                    customInput.className = 'dork-custom-input';
+                    customInput.id = `custom-${id}`;
+                    customInput.placeholder = 'Additional text (optional)';
+                    
+                    const customLabel = document.createElement('small');
+                    customLabel.className = 'dork-custom-label';
+                    customLabel.textContent = 'Add custom text to this dork';
+                    
+                    contentDiv.appendChild(label);
+                    contentDiv.appendChild(customInput);
+                    contentDiv.appendChild(customLabel);
+                    
+                    checkboxDiv.appendChild(contentDiv);
+                    dorkDiv.appendChild(checkboxDiv);
+                    section.appendChild(dorkDiv);
+                });
+            } else {
+                // Use platform-specific dorks for different search engines
+                let categoryDorks;
+                if (tab === 'bing') {
+                    categoryDorks = bingDorks;
+                } else if (tab === 'duckduckgo') {
+                    categoryDorks = duckduckgoDorks;
+                } else if (tab === 'yandex') {
+                    categoryDorks = yandexDorks;
+                } else if (tab === 'fofa') {
+                    categoryDorks = fofaDorks;
+                } else if (tab === 'shodan') {
+                    categoryDorks = shodanDorks;
+                } else if (tab === 'censys') {
+                    categoryDorks = censysDorks;
+                } else if (tab === 'leakix') {
+                    categoryDorks = leakixDorks;
+                } else if (tab === 'netlas') {
+                    categoryDorks = netlasDorks;
+                } else if (tab === 'virustotal') {
+                    categoryDorks = virustotalDorks;
+                } else {
+                    // Google uses all Google dorks
+                    categoryDorks = dorks.filter(d => d.category === 'google');
+                }
+                
+                if (categoryDorks.length === 0) return;
+
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.innerHTML = `<div class="category-title">Google Dorks</div>`;
+
+                categoryDorks.forEach((dork, index) => {
+                    const dorkDiv = document.createElement('div');
+                    dorkDiv.className = 'dork-item';
+                    const id = `dork-${tab}-google-${index}`;
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = id;
+                    checkbox.setAttribute('data-query', dork.query);
+                    checkbox.setAttribute('data-engine', tab);
+                    checkbox.setAttribute('data-category', 'google');
+                    checkbox.setAttribute('data-tab', tab);
+                    
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'dork-checkbox';
+                    checkboxDiv.appendChild(checkbox);
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'dork-content';
+                    
+                    const label = document.createElement('label');
+                    label.setAttribute('for', id);
+                    label.className = 'dork-label';
+                    
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'dork-name';
+                    nameDiv.textContent = dork.name;
+                    
+                    const queryDiv = document.createElement('div');
+                    queryDiv.className = 'dork-query';
+                    queryDiv.textContent = dork.query;
+                    
+                    label.appendChild(nameDiv);
+                    label.appendChild(queryDiv);
+                    
+                    const customInput = document.createElement('input');
+                    customInput.type = 'text';
+                    customInput.className = 'dork-custom-input';
+                    customInput.id = `custom-${id}`;
+                    customInput.placeholder = 'Additional text (optional)';
+                    
+                    const customLabel = document.createElement('small');
+                    customLabel.className = 'dork-custom-label';
+                    customLabel.textContent = 'Add custom text to this dork';
+                    
+                    contentDiv.appendChild(label);
+                    contentDiv.appendChild(customInput);
+                    contentDiv.appendChild(customLabel);
+                    
+                    checkboxDiv.appendChild(contentDiv);
+                    dorkDiv.appendChild(checkboxDiv);
+                    categoryDiv.appendChild(dorkDiv);
+                });
+
+                section.appendChild(categoryDiv);
+            }
+
+            updateStats();
+            document.querySelectorAll(`input[type="checkbox"][data-tab="${tab}"]`).forEach(cb => {
+                cb.addEventListener('change', updateStats);
+            });
+            
+            // Apply filter if there's an active search term
+            const searchInput = document.getElementById('dork-search');
+            if (searchInput && searchInput.value.trim() !== '') {
+                filterDorks();
+            }
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            // For category tabs (cloud/code), use google as engine. Otherwise use the tab name as engine
+            currentEngine = (tab === 'cloud' || tab === 'code') ? 'google' : tab;
+            
+            // Don't clear search field - user might want to keep searching across tabs
+            // Update tab buttons
+            document.querySelectorAll('#tabs .tab').forEach(button => {
+                button.classList.remove('active');
+                const buttonEngine = button.getAttribute('data-engine');
+                const buttonCategory = button.getAttribute('data-category');
+                if ((buttonEngine === tab) || (buttonCategory === tab)) {
+                    button.classList.add('active');
+                }
+            });
+            
+            // Show/hide tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                if (content.id === `${tab}-tab`) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+            
+            // Render dorks for this tab if not already rendered
+            const section = document.getElementById(`${tab}-dorks`);
+            if (!section) return;
+            
+            // Check if section has actual rendered content
+            const hasContent = section.querySelector('.dork-item');
+            if (!hasContent) {
+                renderDorks(tab);
+            }
+            
+            // Apply filter again if there's an active search term
+            const searchInput = document.getElementById('dork-search');
+            if (searchInput && searchInput.value.trim() !== '') {
+                filterDorks();
+            }
+            
+            updateStats();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function replaceDomain(query, domain) {
+            if (!domain) return query;
+            
+            // Replace all variations of example.com with the user's domain
+            let result = query;
+            
+            // Replace quoted versions first (more specific patterns)
+            // Match "example[.]com" or "example.com" in quotes
+            result = result.replace(/"example\[\.\]com"/gi, `"${domain}"`);
+            result = result.replace(/"example\.com"/gi, `"${domain}"`);
+            
+            // Replace unquoted versions (but be careful not to replace parts of URLs)
+            // Only replace standalone example.com or example[.]com
+            result = result.replace(/\bexample\[\.\]com\b/gi, domain);
+            result = result.replace(/\bexample\.com\b/gi, domain);
+            
+            // If no replacement was made and query doesn't already contain the domain, add it
+            const originalResult = result;
+            if (originalResult === query && !result.toLowerCase().includes(domain.toLowerCase())) {
+                // Check if query already ends with a quote or has quotes
+                if (result.includes('"')) {
+                    // Add domain in quotes at the end
+                    result = result.trim() + ` "${domain}"`;
+                } else {
+                    // Add domain without quotes
+                    result = result.trim() + ` ${domain}`;
+                }
+            }
+            
+            return result;
+        }
+
+        function executeDorks() {
+            const domain = document.getElementById('domain').value.trim();
+
+            if (!domain) {
+                alert('Please enter a domain or query!');
+                return;
+            }
+
+            // Get all checked checkboxes across all tabs
+            const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+            
+            if (checkboxes.length === 0) {
+                alert('Please select at least one dork!');
+                return;
+            }
+
+            // Check if we need delay (more than 5 dorks)
+            const needsDelay = checkboxes.length > 5;
+            let accumulatedDelay = 0;
+            
+            checkboxes.forEach((checkbox, index) => {
+                const engineName = checkbox.getAttribute('data-engine');
+                const engine = searchEngines[engineName];
+                
+                let query = checkbox.getAttribute('data-query');
+                query = replaceDomain(query, domain);
+                
+                // Get custom input for this dork
+                const customInput = document.getElementById(`custom-${checkbox.id}`);
+                if (customInput && customInput.value.trim()) {
+                    query += ' ' + customInput.value.trim();
+                }
+
+                // VirusTotal uses a different URL format
+                let url;
+                if (engineName === 'virustotal') {
+                    // VirusTotal URL format: https://www.virustotal.com/gui/search/{query}
+                    url = engine.baseUrl + encodeURIComponent(query);
+                } else {
+                    url = engine.baseUrl + encodeURIComponent(query);
+                }
+                
+                // Add delay if needed (random between 1-4 seconds)
+                if (needsDelay && index > 0) {
+                    const delay = Math.random() * 3000 + 1000; // 1000-4000ms
+                    accumulatedDelay += delay;
+                    setTimeout(() => {
+                        window.open(url, '_blank');
+                    }, accumulatedDelay);
+                } else {
+                    window.open(url, '_blank');
+                }
+            });
+        }
+
+        function selectAll(category) {
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][data-tab="${currentTab}"]`);
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            
+            updateStats();
+        }
+
+        function deselectAll() {
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][data-tab="${currentTab}"]`);
+            checkboxes.forEach(cb => {
+                cb.checked = false;
+            });
+            updateStats();
+        }
+
+        function clearSelection() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                cb.checked = false;
+            });
+            document.getElementById('domain').value = '';
+            document.querySelectorAll('.dork-custom-input').forEach(input => {
+                input.value = '';
+            });
+            updateStats();
+        }
+
+        function filterDorks() {
+            const searchTerm = document.getElementById('dork-search').value.toLowerCase().trim();
+            // Search in all tabs, not just the current one
+            const allDorkItems = document.querySelectorAll('.dorks-section .dork-item');
+            
+            allDorkItems.forEach(item => {
+                const name = item.querySelector('.dork-name')?.textContent.toLowerCase() || '';
+                const query = item.querySelector('.dork-query')?.textContent.toLowerCase() || '';
+                
+                if (searchTerm === '' || name.includes(searchTerm) || query.includes(searchTerm)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+            
+            // Update stats for current tab after filtering
+            updateStats();
+        }
+
+        function updateStats() {
+            // Only count visible checkboxes
+            const visibleDorks = document.querySelectorAll(`#${currentTab}-dorks .dork-item:not(.hidden)`);
+            const checkboxes = Array.from(visibleDorks).map(item => {
+                return item.querySelector('input[type="checkbox"]');
+            }).filter(cb => cb && cb.checked);
+            
+            const checked = checkboxes.length;
+            const statsEl = document.getElementById('stats');
+            if (checked === 0) {
+                statsEl.textContent = 'No dorks selected';
+            } else {
+                statsEl.textContent = `${checked} dork${checked > 1 ? 's' : ''} selected`;
+            }
+        }
+
+        // Initialize when page loads
+        renderDorks('google');
+    </script>
+</body>
+</html>
